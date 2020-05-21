@@ -83,8 +83,6 @@ class CPU:
         PRN = 0b01000111
         PRA = 0b01001000
 
-        SP=7
-
         while not halted:
             instruction = self.ram[pc]
 
@@ -102,20 +100,6 @@ class CPU:
                 reg_num_b = self.ram[pc + 2]
                 self.registers[reg_num_a] *= self.registers[reg_num_b]
                 pc += 3
-            elif instruction == PUSH:
-                self.registers[SP] -= 1 # Decrement the SP
-                reg_num = self.ram[pc+1] # get the register numer
-                val = self.registers[reg_num] # get the value of the register
-                top_of_stack_addr = self.registers[SP]
-                self.ram[top_of_stack_addr] = val
-                pc += 2
-            elif instruction == POP:
-                addr = self.registers[SP]
-                val = self.ram[addr]
-                reg_num = self.ram[pc+1]
-                self.registers[reg_num] = val
-                self.registers[SP] += 1
-                pc += 2
             elif instruction == HLT:
                 halted = True
             else:
